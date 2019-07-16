@@ -1,6 +1,6 @@
 spring:
   application:
-    name: pring-gateway
+    name: spring-gateway
   cloud:
     gateway:
       discovery:
