@@ -46,6 +46,28 @@ public class Application {
                 .then(Mono.just(exchange))
                 .map(serverWebExchange -> {
                     //adds header to response
+                    System.out.println("path = " + serverWebExchange.getRequest().getPath());
+                    System.out.println("cookie = " + serverWebExchange.getRequest().getCookies());
+                    System.out.println("queryParams = " + serverWebExchange.getRequest().getQueryParams());
+                    System.out.println("remoteAddress = " + serverWebExchange.getRequest().getRemoteAddress());
+                    System.out.println("sslInfo = " + serverWebExchange.getRequest().getSslInfo());
+                    System.out.println("method = " + serverWebExchange.getRequest().getMethod());
+                    System.out.println("methodValue = " + serverWebExchange.getRequest().getMethodValue());
+                    System.out.println("uri = " + serverWebExchange.getRequest().getURI());
+                    System.out.println("body = " + serverWebExchange.getRequest().getBody());
+                    System.out.println("header = " + serverWebExchange.getRequest().getHeaders());
+
+                    String path = serverWebExchange.getRequest().getPath().pathWithinApplication().value();
+
+                    System.out.println("path = " + path);
+                    System.out.println("*******************************");
+
+                    if (path.startsWith("/user")) {
+                        serverWebExchange.getResponse().getHeaders().set("CUSTOM-RESPONSE-HEADER",
+                                HttpStatus.OK.equals(serverWebExchange.getResponse().getStatusCode()) ? "It worked" : "It did not work");
+                        return serverWebExchange;
+                    }
+
                     String token = serverWebExchange.getRequest().getHeaders().getFirst("token");
                     if (token == null) {
                         System.out.println("no token");
